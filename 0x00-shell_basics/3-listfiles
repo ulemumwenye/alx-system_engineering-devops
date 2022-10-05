@@ -1,2 +1,2 @@
 #!/bin/bash
- ls -d -l . manual manual/chap1
+ls -l
