@@ -1,34 +1,53 @@
 #!/usr/bin/python3
-
+"""script that fetches info about a given employee using an api
+and exports it in csv format
+"""
+import json
 import requests
-import csv
+import sys
 
-def export_employee_todo_data(employee_id):
-    # Make a GET request to the API endpoint
-    response = requests.get(f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos')
 
-    if response.status_code == 200:
-        todos = response.json()
-        employee_name = todos[0]['username']
-        employee_data = []
+base_url = 'https://jsonplaceholder.typicode.com'
 
-        for todo in todos:
-            task_title = todo['title']
-            task_completed = todo['completed']
-            employee_data.append([employee_id, employee_name, task_completed, task_title])
+if __name__ == "__main__":
 
-        # Create the CSV file name based on the employee ID
-        file_name = f"{employee_id}.csv"
+    user_id = sys.argv[1]
 
-        # Write the employee's TODO data to the CSV file
-        with open(file_name, 'w', newline='') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-            writer.writerows(employee_data)
+    # get user info e.g https://jsonplaceholder.typicode.com/users/1/
+    user_url = '{}/users?id={}'.format(base_url, user_id)
+    # print("user url is: {}".format(user_url))
 
-        print(f"Exported TODO data for Employee ID {employee_id} to {file_name}")
-    else:
-        print(f"Failed to retrieve TODO list for Employee ID {employee_id}. Error: {response.status_code}")
+    # get info from api
+    response = requests.get(user_url)
+    # pull data from api
+    data = response.text
+    # parse the data into JSON format
+    data = json.loads(data)
+    # extract user data, in this case, username of employee
+    user_name = data[0].get('username')
+    # print("id is: {}".format(user_id))
+    # print("name is: {}".format(user_name))
 
-# Example usage: passing employee ID 1
-export_employee_todo_data(1)
+    # get user info about todo tasks
+    # e.g https://jsonplaceholder.typicode.com/users/1/todos
+    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
+    # print("tasks url is: {}".format(tasks_url))
+
+    # get info from api
+    response = requests.get(tasks_url)
+    # pull data from api
+    tasks = response.text
+    # parse the data into JSON format
+    tasks = json.loads(tasks)
+
+    # build the csv
+    builder = ""
+    for task in tasks:
+        builder += '"{}","{}","{}","{}"\n'.format(
+            user_id,
+            user_name,
+            task['completed'],  # or use get method
+            task['title']
+        )
+    with open('{}.csv'.format(user_id), 'w', encoding='UTF8') as myFile:
+        myFile.write(builder)
