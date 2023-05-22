@@ -1,41 +1,32 @@
 #!/usr/bin/python3
-"""
-Script that, using this REST API, for a given employee ID, returns
-information about his/her TODO list progress
-and export data in the JSON format.
-"""
 
-import json
 import requests
-from sys import argv
+import json
 
+def export_employee_todo_data(employee_id):
+    # Make a GET request to the API endpoint
+    response = requests.get(f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos')
 
-if __name__ == "__main__":
+    if response.status_code == 200:
+        todos = response.json()
+        employee_name = todos[0]['username']
+        employee_data = []
 
-    sessionReq = requests.Session()
+        for todo in todos:
+            task_title = todo['title']
+            task_completed = todo['completed']
+            employee_data.append({"task": task_title, "completed": task_completed, "username": employee_name})
 
-    idEmp = argv[1]
-    idURL = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(idEmp)
-    nameURL = 'https://jsonplaceholder.typicode.com/users/{}'.format(idEmp)
+        # Create the JSON file name based on the employee ID
+        file_name = f"{employee_id}.json"
 
-    employee = sessionReq.get(idURL)
-    employeeName = sessionReq.get(nameURL)
+        # Write the employee's TODO data to the JSON file
+        with open(file_name, 'w') as json_file:
+            json.dump({employee_id: employee_data}, json_file)
 
-    json_req = employee.json()
-    usr = employeeName.json()['username']
+        print(f"Exported TODO data for Employee ID {employee_id} to {file_name}")
+    else:
+        print(f"Failed to retrieve TODO list for Employee ID {employee_id}. Error: {response.status_code}")
 
-    totalTasks = []
-    updateUser = {}
-
-    for all_Emp in json_req:
-        totalTasks.append(
-            {
-                "task": all_Emp.get('title'),
-                "completed": all_Emp.get('completed'),
-                "username": usr,
-            })
-    updateUser[idEmp] = totalTasks
-
-    file_Json = idEmp + ".json"
-    with open(file_Json, 'w') as f:
-        json.dump(updateUser, f)
+# Example usage: passing employee ID 1
+export_employee_todo_data(1)
