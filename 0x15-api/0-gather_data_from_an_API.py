@@ -1,37 +1,29 @@
 #!/usr/bin/python3
-"""
-Script that, using this REST API, for a given employee ID, returns
-information about his/her TODO list progress
-"""
 
-import json
 import requests
-from sys import argv
 
+def get_employee_todo_progress(employee_id):
+    # Make a GET request to the API endpoint
+    response = requests.get(f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos')
 
-if __name__ == "__main__":
+    if response.status_code == 200:
+        todos = response.json()
+        total_tasks = len(todos)
+        completed_tasks = [todo for todo in todos if todo['completed']]
+        num_completed_tasks = len(completed_tasks)
+        employee_name = todos[0]['username']
 
-    sessionReq = requests.Session()
+        # Print the employee's TODO list progress
+        print(f"Employee {employee_name} is done with tasks ({num_completed_tasks}/{total_tasks}):")
+        print(f"{employee_name}: name of the employee")
+        print(f"{num_completed_tasks}: number of completed tasks")
+        print(f"{total_tasks}: total number of tasks, which is the sum of completed and non-completed tasks")
 
-    idEmp = argv[1]
-    idURL = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(idEmp)
-    nameURL = 'https://jsonplaceholder.typicode.com/users/{}'.format(idEmp)
+        # Print the titles of completed tasks
+        for task in completed_tasks:
+            print(f"\t{task['title']}")
+    else:
+        print(f"Failed to retrieve TODO list for employee ID {employee_id}. Error: {response.status_code}")
 
-    employee = sessionReq.get(idURL)
-    employeeName = sessionReq.get(nameURL)
-
-    json_req = employee.json()
-    name = employeeName.json()['name']
-
-    totalTasks = 0
-
-    for done_tasks in json_req:
-        if done_tasks['completed']:
-            totalTasks += 1
-
-    print("Employee {} is done with tasks({}/{}):".
-          format(name, totalTasks, len(json_req)))
-
-    for done_tasks in json_req:
-        if done_tasks['completed']:
-            print("\t " + done_tasks.get('title'))
+# Example usage: passing employee ID 1
+get_employee_todo_progress(1)
