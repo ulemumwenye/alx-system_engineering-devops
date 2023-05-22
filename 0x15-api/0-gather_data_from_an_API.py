@@ -1,37 +1,59 @@
 #!/usr/bin/python3
-"""
-Script that, using this REST API, for a given employee ID, returns
-information about his/her TODO list progress
-"""
-
+"""script that fetches info about a given employee's ID using an api"""
 import json
 import requests
-from sys import argv
+import sys
 
+
+base_url = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
 
-    sessionReq = requests.Session()
+    user_id = sys.argv[1]
 
-    idEmp = argv[1]
-    idURL = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(idEmp)
-    nameURL = 'https://jsonplaceholder.typicode.com/users/{}'.format(idEmp)
+    # get user info e.g https://jsonplaceholder.typicode.com/users/1/
+    user_url = '{}/users?id={}'.format(base_url, user_id)
+    # print("user url is: {}".format(user_url))
 
-    employee = sessionReq.get(idURL)
-    employeeName = sessionReq.get(nameURL)
+    # get info from api
+    response = requests.get(user_url)
+    # pull data from api
+    data = response.text
+    # parse the data into JSON format
+    data = json.loads(data)
+    # extract user data, in this case, name of employee
+    name = data[0].get('name')
+    # print("id is: {}".format(user_id))
+    # print("name is: {}".format(name))
 
-    json_req = employee.json()
-    name = employeeName.json()['name']
+    # get user info about todo tasks
+    # e.g https://jsonplaceholder.typicode.com/users/1/todos
+    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
+    # print("tasks url is: {}".format(tasks_url))
 
-    totalTasks = 0
+    # get info from api
+    response = requests.get(tasks_url)
+    # pull data from api
+    tasks = response.text
+    # parse the data into JSON format
+    tasks = json.loads(tasks)
 
-    for done_tasks in json_req:
-        if done_tasks['completed']:
-            totalTasks += 1
+    # initialize completed count as 0 and find total number of tasks
+    completed = 0
+    total_tasks = len(tasks)
 
-    print("Employee {} is done with tasks({}/{}):".
-          format(name, totalTasks, len(json_req)))
+    # initialize empty list for completed tasks
+    completed_tasks = []
+    # loop through tasks counting number of completed tasks
+    for task in tasks:
 
-    for done_tasks in json_req:
-        if done_tasks['completed']:
-            print("\t " + done_tasks.get('title'))
+        if task.get('completed'):
+            # print("The tasks are: {}\n".format(task))
+            completed_tasks.append(task)
+            completed += 1
+
+    # print the output in the required format
+    print("Employee {} is done with tasks({}/{}):"
+          .format(name, completed, total_tasks))
+    for task in completed_tasks:
+        print("\t {}".format(task.get('title')))
