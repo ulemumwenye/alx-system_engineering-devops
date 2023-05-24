@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
-"""
-This script retrieves user data and tasks from an API and exports the data to a CSV file.
+#!/usr/bin/python3
+"""script that fetches info about a given employee using an api
+and exports it in csv format
 """
 
 import csv
