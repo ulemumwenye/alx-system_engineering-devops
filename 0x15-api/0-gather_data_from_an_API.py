@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-"""script that fetches info about a given employee using an api
- 
 """
+Script that fetches info about a given employee using an API.
+"""
+
 import json
 import requests
 import sys
@@ -17,7 +18,7 @@ def get_employee_name(employee_id):
     Returns:
         Name of the employee.
     """
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id)
     response = requests.get(url)
     data = response.json()
     return data.get("name")
@@ -33,7 +34,7 @@ def get_employee_todo_progress(employee_id):
     Returns:
         A tuple containing the number of completed tasks and the total number of tasks.
     """
-    url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    url = "https://jsonplaceholder.typicode.com/todos?userId={}".format(employee_id)
     response = requests.get(url)
     data = response.json()
 
@@ -54,7 +55,10 @@ if __name__ == "__main__":
     completed_tasks, total_tasks = get_employee_todo_progress(employee_id)
 
     # Print the output in the required format
-    print(f"Employee {employee_name} is done with tasks ({completed_tasks}/{total_tasks}):")
+    print("Employee {} is done with tasks ({}/{}):".format(employee_name, completed_tasks, total_tasks))
     for i in range(total_tasks):
-        if requests.get(f"https://jsonplaceholder.typicode.com/todos/{i + 1}").json().get("completed"):
-            print("\t{}".format(requests.get(f"https://jsonplaceholder.typicode.com/todos/{i + 1}").json().get("title")))
+        url = "https://jsonplaceholder.typicode.com/todos/{}".format(i + 1)
+        response = requests.get(url)
+        task = response.json()
+        if task.get("completed"):
+            print("\t{}".format(task.get("title")))
