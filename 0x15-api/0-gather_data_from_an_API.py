@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-#ID using an API
+"""ID using an API"""
 
 import json
 import requests
