@@ -1,6 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
-Script that fetches information about a given employee's ID using an API.
+This script retrieves user data and tasks from an API and exports the data to a CSV file.
 """
 
 import csv
@@ -28,16 +28,14 @@ if __name__ == "__main__":
     response = requests.get(tasks_url, verify=False)
     tasks = json.loads(response.text)
 
-   # Create and write to CSV file
-    file_name = f'{user_id}.csv'
+    # Create and write to CSV file
+    file_name = '{}.csv'.format(user_id)
     with open(file_name, 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        writer = csv.writer(csvfile)
         writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
         for task in tasks:
-            completed_status = "False"
-            if task.get('completed'):
-                completed_status = "True"
+            completed_status = True if task.get('completed') else False
             writer.writerow([user_id, username, completed_status, task.get('title')])
 
     # Print success message
-    print(f"Data exported to {user_id}.csv")
+    print("Data exported to {}.csv".format(user_id))
