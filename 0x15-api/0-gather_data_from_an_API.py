@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3
 """
 Fetches info about an employee's ID using an API.
