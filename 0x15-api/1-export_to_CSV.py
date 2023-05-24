@@ -12,10 +12,10 @@ if __name__ == "__main__":
     user_id = sys.argv[1]
 
     # Get user info
-    user_url = '{}/users?id={}'.format(base_url, user_id)
+    user_url = '{}/users/{}'.format(base_url, user_id)
     response = requests.get(user_url, verify=False)
     data = response.json()
-    name = data[0].get('name')
+    name = data.get('name')
 
     # Get user tasks
     tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
