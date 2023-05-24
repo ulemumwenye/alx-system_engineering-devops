@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-
-"""ID using an API"""
-
+"""script that fetches info api"""
 import json
 import requests
 import sys
