@@ -31,13 +31,13 @@ if __name__ == "__main__":
     # Create and write to CSV file
     file_name = '{}.csv'.format(user_id)
     with open(file_name, 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        writer.writerow(['"USER_ID"', '"USERNAME"', '"TASK_COMPLETED_STATUS"', '"TASK_TITLE"'])
+        writer = csv.writer(csvfile)
+        writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
         for task in tasks:
             completed_status = "False"
             if task.get('completed'):
                 completed_status = "True"
-            writer.writerow(['"{}"'.format(user_id), '"{}"'.format(username), '"{}"'.format(completed_status), '"{}"'.format(task.get('title'))])
+            writer.writerow([user_id, username, completed_status, task.get('title')])
 
     # Print success message
     print("Data exported to {}.csv".format(user_id))
