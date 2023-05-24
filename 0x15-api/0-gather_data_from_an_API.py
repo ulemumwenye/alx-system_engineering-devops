@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Fetches info about an employee's ID using an API.
+ID using an API.
 """
 import json
 import requests
