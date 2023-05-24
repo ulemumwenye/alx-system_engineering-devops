@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """script that fetches info about a given employee using an api
-and exports it in json format
+and exports it in csv format
 """
 import json
 import requests
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # extract user data, in this case, username of employee
     user_name = data[0].get('username')
     # print("id is: {}".format(user_id))
-    # print("username is: {}".format(user_name))
+    # print("name is: {}".format(user_name))
 
     # get user info about todo tasks
     # e.g https://jsonplaceholder.typicode.com/users/1/todos
@@ -39,21 +39,15 @@ if __name__ == "__main__":
     tasks = response.text
     # parse the data into JSON format
     tasks = json.loads(tasks)
-    # print("JSOON LOADS IS: {}".format(tasks))
 
-    dict_key = str(user_id)
-    # print("dict_key: {}".format(dict_key))
-
-    # build the json
-    builder = {dict_key: []}
+    # build the csv
+    builder = ""
     for task in tasks:
-        json_data = {
-            "task": task['title'],  # or use get method
-            "completed": task['completed'],
-            "username": user_name
-        }
-        # append dictionary key to the dictionary
-        builder[dict_key].append(json_data)
-    json_encoded_data = json.dumps(builder)
-    with open('{}.json'.format(user_id), 'w', encoding='UTF8') as myFile:
-        myFile.write(json_encoded_data)
+        builder += '"{}","{}","{}","{}"\n'.format(
+            user_id,
+            user_name,
+            task['completed'],  # or use get method
+            task['title']
+        )
+    with open('{}.csv'.format(user_id), 'w', encoding='UTF8') as myFile:
+        myFile.write(builder)
