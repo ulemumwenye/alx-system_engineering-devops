@@ -2,12 +2,12 @@ import csv
 import json
 import requests
 import sys
-import urllib3
+import warnings
 
 base_url = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    warnings.filterwarnings("ignore")
 
     user_id = sys.argv[1]
 
