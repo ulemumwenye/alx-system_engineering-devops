@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
-Script that fetches info about an
-employee's ID using an API.
+Script that fetches information about a given employee's ID using an API.
 """
 
 import json
@@ -14,8 +13,7 @@ BASE_URL = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
     """
-    Retrieves info about an employee's
-    ID and displays their completed tasks.
+    Retrieves information about a given employee's ID and displays their completed tasks.
     """
     user_id = sys.argv[1]
 
@@ -50,6 +48,7 @@ if __name__ == "__main__":
             completed += 1
 
     # Print the output in the required format
-    print(f"Employee {name} is done with tasks ({completed}/{total_tasks}):")
+    output_format = "Employee {} is done with tasks ({}/{}):"
+    print(output_format.format(name, completed, total_tasks))
     for task in completed_tasks:
-        print(f"\t{task.get('title')}")
+        print("\t{}".format(task.get('title')))
