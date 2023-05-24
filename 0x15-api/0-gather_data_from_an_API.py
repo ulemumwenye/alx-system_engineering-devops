@@ -5,7 +5,7 @@ Fetches info about an employee's ID using an API.
 
 import json
 import requests
-import sys
+sys
 
 BASE_URL = 'https://jsonplaceholder.typicode.com'
 
