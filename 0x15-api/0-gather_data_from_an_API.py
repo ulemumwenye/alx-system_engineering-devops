@@ -1,26 +1,22 @@
 #!/usr/bin/python3
 """
-Script that fetches information about an employee's ID using an API.
+Fetches info about an employee's ID using an API.
 """
 
 import json
 import requests
 import sys
 
-
 BASE_URL = 'https://jsonplaceholder.typicode.com'
-
 
 if __name__ == "__main__":
     """
-    Retrieves information about an employee's ID and displays their completed.
+    Retrieves info about an employee's ID and displays completed tasks.
     """
     user_id = sys.argv[1]
 
     # Get user info, e.g., https://jsonplaceholder.typicode.com/users/1/
-    user_url = (
-        f"{BASE_URL}/users?id={user_id}"
-    )
+    user_url = f"{BASE_URL}/users?id={user_id}"
 
     # Get info from API
     response = requests.get(user_url, verify=True)
@@ -30,9 +26,7 @@ if __name__ == "__main__":
     name = data[0].get('name')
 
     # Get user info about todo tasks, e.g., https://jsonplaceholder.typicode.com/users/1/todos
-    tasks_url = (
-        f"{BASE_URL}/todos?userId={user_id}"
-    )
+    tasks_url = f"{BASE_URL}/todos?userId={user_id}"
 
     # Get info from API
     response = requests.get(tasks_url, verify=True)
