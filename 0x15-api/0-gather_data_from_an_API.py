@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # Extract user data, in this case, the name of the employee
     name = data[0].get('name')
 
-    # Get user info about todo tasks, e.g., https://jsonplaceholder.typicode.com/users/1/todos
+    # Get user info about todo tasks, e.g., 
     tasks_url = f"{BASE_URL}/todos?userId={user_id}"
 
     # Get info from API
