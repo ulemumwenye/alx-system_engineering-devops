@@ -13,13 +13,13 @@ if __name__ == "__main__":
 
     # Get user info
     user_url = '{}/users?id={}'.format(base_url, user_id)
-    response = requests.get(user_url)
+    response = requests.get(user_url, verify=False)
     data = response.json()
     name = data[0].get('name')
 
     # Get user tasks
     tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
-    response = requests.get(tasks_url)
+    response = requests.get(tasks_url, verify=False)
     tasks = response.json()
 
     # Export data to CSV file
