@@ -7,9 +7,6 @@ import json
 import requests
 import sys
 
-# Disable SSL certificate verification
-requests.packages.urllib3.disable_warnings()
-
 base_url = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
