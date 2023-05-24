@@ -19,7 +19,7 @@ def get_employee_name(employee_id):
         Name of the employee.
     """
     url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id)
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     data = response.json()
     return data.get("name")
 
@@ -35,7 +35,7 @@ def get_employee_todo_progress(employee_id):
         A tuple containing the number of completed tasks and the total number of tasks.
     """
     url = "https://jsonplaceholder.typicode.com/todos?userId={}".format(employee_id)
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     data = response.json()
 
     total_tasks = len(data)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     print("Employee {} is done with tasks ({}/{}):".format(employee_name, completed_tasks, total_tasks))
     for i in range(total_tasks):
         url = "https://jsonplaceholder.typicode.com/todos/{}".format(i + 1)
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
         task = response.json()
         if task.get("completed"):
             print("\t{}".format(task.get("title")))
