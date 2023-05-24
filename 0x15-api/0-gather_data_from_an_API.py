@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Script that fetches information about a given employee's ID using an API.
+Script that fetches  a given employee's ID using an API.
 """
 
 import json
