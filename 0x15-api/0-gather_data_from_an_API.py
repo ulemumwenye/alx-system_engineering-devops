@@ -1,11 +1,12 @@
-#!/usr/bin/python3
+ #!/usr/bin/python3
 """
 Fetches info about an employee's ID using an API.
 """
 
 import json
 import requests
-sys
+import sys
+
 
 BASE_URL = 'https://jsonplaceholder.typicode.com'
 
