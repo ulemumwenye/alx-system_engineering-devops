@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+"""script that fetches info about a given employee using an api
+ 
 """
-This script retrieves employee TODO list progress from an API,
-and displays the progress in a specific format.
- """
+import json
 import requests
 import sys
 
