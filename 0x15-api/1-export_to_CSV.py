@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""script that fetches info about a given employee using an api
-and exports it in csv format
-"""
+"""Script that fetches info about a given employee's ID using an API and exports the data in CSV format."""
+import csv
 import json
 import requests
 import sys
@@ -10,44 +9,27 @@ import sys
 base_url = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
-
     user_id = sys.argv[1]
 
-    # get user info e.g https://jsonplaceholder.typicode.com/users/1/
+    # Get user info
     user_url = '{}/users?id={}'.format(base_url, user_id)
-    # print("user url is: {}".format(user_url))
-
-    # get info from api
     response = requests.get(user_url)
-    # pull data from api
-    data = response.text
-    # parse the data into JSON format
-    data = json.loads(data)
-    # extract user data, in this case, username of employee
-    user_name = data[0].get('username')
-    # print("id is: {}".format(user_id))
-    # print("name is: {}".format(user_name))
+    data = response.json()
+    name = data[0].get('name')
 
-    # get user info about todo tasks
-    # e.g https://jsonplaceholder.typicode.com/users/1/todos
+    # Get user tasks
     tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
-    # print("tasks url is: {}".format(tasks_url))
-
-    # get info from api
     response = requests.get(tasks_url)
-    # pull data from api
-    tasks = response.text
-    # parse the data into JSON format
-    tasks = json.loads(tasks)
+    tasks = response.json()
 
-    # build the csv
-    builder = ""
-    for task in tasks:
-        builder += '"{}","{}","{}","{}"\n'.format(
-            user_id,
-            user_name,
-            task['completed'],  # or use get method
-            task['title']
-        )
-    with open('{}.csv'.format(user_id), 'w', encoding='UTF8') as myFile:
-        myFile.write(builder)
+    # Export data to CSV file
+    file_name = '{}.csv'.format(user_id)
+    with open(file_name, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        for task in tasks:
+            completed_status = "Completed" if task.get('completed') else "Incomplete"
+            task_title = task.get('title')
+            writer.writerow([user_id, name, completed_status, task_title])
+
+    print("Data exported to file: {}".format(file_name))
