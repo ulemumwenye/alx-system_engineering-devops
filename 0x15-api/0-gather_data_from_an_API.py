@@ -7,6 +7,9 @@ import json
 import requests
 import sys
 
+# Disable SSL certificate verification
+requests.packages.urllib3.disable_warnings()
+
 base_url = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
@@ -19,7 +22,7 @@ if __name__ == "__main__":
     user_url = '{}/users?id={}'.format(base_url, user_id)
 
     # Get info from API
-    response = requests.get(user_url)
+    response = requests.get(user_url, verify=False)
     data = response.json()
 
     # Extract user data, in this case, the name of the employee
@@ -29,7 +32,7 @@ if __name__ == "__main__":
     tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
 
     # Get info from API
-    response = requests.get(tasks_url)
+    response = requests.get(tasks_url, verify=False)
     tasks = response.json()
 
     # Initialize completed count as 0 and find the total number of tasks
