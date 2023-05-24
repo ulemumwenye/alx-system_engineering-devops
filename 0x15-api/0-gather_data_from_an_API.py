@@ -9,7 +9,7 @@ BASE_URL = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
     """
-    Retrieves info about an employee's ID and displays completed tasks.
+    Retrieves info about an employee's ID.
     """
     user_id = sys.argv[1]
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     response = requests.get(user_url, verify=True)
     data = response.json()
 
-    # Extract user data, in this case, the name of the employee
+    # Extract user data, in this case,
     name = data[0].get('name')
 
     # Get user info about todo tasks, e.g.,
@@ -30,14 +30,14 @@ if __name__ == "__main__":
     response = requests.get(tasks_url, verify=True)
     tasks = response.json()
 
-    # Initialize completed count as 0 and find the total number of tasks
+    # Initialize completed count as
     completed = 0
     total_tasks = len(tasks)
 
     # Initialize an empty list for completed tasks
     completed_tasks = []
 
-    # Loop through tasks counting the number of completed tasks
+    # Loop through tasks counting
     for task in tasks:
         if task.get('completed'):
             completed_tasks.append(task)
